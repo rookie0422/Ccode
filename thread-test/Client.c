@@ -32,8 +32,7 @@ void *send_task(void *arg)
     fgets(msg->msg_type, BUFSZ, stdin);
     trim(msg->msg_type);
 
-    while (1)
-    {
+    while (1) {
         // printf("\nEnter message: ");
         fgets(msg->msg_text, BUFSZ, stdin);
 
@@ -63,14 +62,13 @@ void *srv_task(void *arg)
     if ((qid = msgget(key, IPC_CREAT | 0666)) == -1)
         perror("msgget");
 
-    while (1)
-    {
+    while (1) {
         if (msgrcv(qid, &rsv_msg, sizeof(message_t), 0, 0) == -1)
             perror("msgrcv");
 
         trim(msg->msg_type);
         trim(rsv_msg.msg_type);
-        if(strcmp(msg->msg_type, rsv_msg.msg_type))
+        if (strcmp(msg->msg_type, rsv_msg.msg_type))
             printf("\r\n%s: %s", rsv_msg.msg_type, rsv_msg.msg_text);
 
 
@@ -88,8 +86,7 @@ void *srv_task(void *arg)
 void trim(char *str)
 {
     int len = strlen(str);
-    while (len > 0 && isspace(str[len - 1]))
-    {
+    while (len > 0 && isspace(str[len - 1])) {
         str[len - 1] = '\0';
         len--;
     }
@@ -102,32 +99,28 @@ int main()
     message_t msg;
     // 创建线程1
     ret1 = pthread_create(&send_thread, NULL, send_task, &msg);
-    if (ret1)
-    {
+    if (ret1) {
         fprintf(stderr, "Error - pthread_create() return code: %d\n", ret1);
         return 1;
     }
 
     // 创建线程2
     ret2 = pthread_create(&srv_thread, NULL, srv_task, &msg);
-    if (ret2)
-    {
+    if (ret2) {
         fprintf(stderr, "Error - pthread_create() return code: %d\n", ret2);
         return 1;
     }
 
     // 等待线程1结束
     ret1 = pthread_join(send_thread, NULL);
-    if (ret1)
-    {
+    if (ret1) {
         fprintf(stderr, "Error - pthread_join() return code: %d\n", ret1);
         return 1;
     }
 
     // 等待线程2结束
     ret2 = pthread_join(srv_thread, NULL);
-    if (ret2)
-    {
+    if (ret2) {
         fprintf(stderr, "Error - pthread_join() return code: %d\n", ret2);
         return 1;
     }
