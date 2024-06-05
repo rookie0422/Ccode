@@ -37,15 +37,13 @@ void *srv_task(void *arg)
     if ((send_qid = msgget(send_key, IPC_CREAT | 0666)) == -1)
         perror("msgget");
 
-    while (1)
-    {
+    while (1) {
         if (msgrcv(srv_qid, &msg, sizeof(message_t), 0, 0) == -1)
             perror("msgrcv");
 
         printf("%s: %s", msg.msg_type, msg.msg_text);
 
-        for (int i = 0;i < CLIENT_COUNT;i++)
-        {
+        for (int i = 0;i < CLIENT_COUNT;i++) {
             if (msgsnd(send_qid, &msg, sizeof(message_t), 0) == -1)
                 perror("msgsnd");
         }
@@ -66,8 +64,7 @@ void *srv_task(void *arg)
 void trim(char *str)
 {
     int len = strlen(str);
-    while (len > 0 && isspace(str[len - 1]))
-    {
+    while (len > 0 && isspace(str[len - 1])) {
         str[len - 1] = '\0';
         len--;
     }
@@ -80,16 +77,14 @@ int main()
 
     // 创建线程2
     ret2 = pthread_create(&srv_thread, NULL, srv_task, NULL);
-    if (ret2)
-    {
+    if (ret2) {
         fprintf(stderr, "Error - pthread_create() return code: %d\n", ret2);
         return 1;
     }
 
     // 等待线程2结束
     ret2 = pthread_join(srv_thread, NULL);
-    if (ret2)
-    {
+    if (ret2) {
         fprintf(stderr, "Error - pthread_join() return code: %d\n", ret2);
         return 1;
     }

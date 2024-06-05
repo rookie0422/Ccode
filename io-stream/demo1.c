@@ -22,17 +22,17 @@ int main(int argc, const char *argv[])
     }
     while (1) {
         clock = time(NULL);
-        clocktim = localtime(&clock); 
+        clocktim = localtime(&clock);
 
         printf("%04d-%02d-%02d %02d:%02d:%02d\n", clocktim->tm_year + 1900, clocktim->tm_mon + 1, clocktim->tm_mday,
             clocktim->tm_hour, clocktim->tm_min, clocktim->tm_sec);
-            
+
         fprintf(p, "%d.\t%04d-%02d-%02d %02d:%02d:%02d\n", order, clocktim->tm_year + 1900, clocktim->tm_mon + 1,
             clocktim->tm_mday, clocktim->tm_hour, clocktim->tm_min, clocktim->tm_sec);
-            
-        fflush(p); 
 
-        order++; 
+        fflush(p);
+
+        order++;
 
         sleep(1);
     }
