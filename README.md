@@ -1,1 +1,1 @@
-一些linux中的c语言测试程序，demo。
+一些linux中的c语言测试，demo程序。
