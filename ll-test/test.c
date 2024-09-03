@@ -1,95 +1,44 @@
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <ctype.h>
-
-#define MAX(a,b) ((a) > (b) ? (a) : (b))
-#define MIN(a,b) ((a) < (b) ? (a) : (b))
-#define ARR_SIZE(arr) (sizeof((arr)) / sizeof((arr[0])))
-
-// bool *camelMatch(char **queries, int queriesSize, char *pattern, int *returnSize)
-// {
-//     int n = queriesSize;
-
-//     bool *res = (bool *)malloc(n * sizeof(bool));
-//     for (int i = 0; i < n; i++) {
-//         res[i] = true;
-//         int p = 0;
-//         for (int j = 0; queries[i][j] != '\0'; j++) {
-//             if (p < strlen(pattern) && pattern[p] == queries[i][j]) {
-//                 p++;
-//             } else if (isupper(queries[i][j])) {
-//                 res[i] = false;
-//                 break;
-//             }
-//         }
-//         if (p < strlen(pattern)) {
-//             res[i] = false;
-//         }
-//     }
-//     *returnSize = n;
-//     return res;
-// }
-
-bool *camelMatch(char **queries, int queriesSize, char *pattern, int *returnSize)
+#include <assert.h>
+char *func(char *str, int *max)
 {
-    bool *result = (bool *)malloc(queriesSize * sizeof(bool));
+    char *loc = NULL;
+    char *s;
+    int temp = 0;
+    *max     = 0;
 
-    for (int i = 0; i < queriesSize; i++) {
-        int pattern_index = 0;
-        result[i] = true;
-        for (int j = 0; j < strlen(queries[i]); j++) {
-            if ((pattern_index < strlen(pattern)) && (pattern[pattern_index] == queries[i][j])) {
-                pattern_index++;
-            } else {
-                if (isupper(queries[i][j])) {
-                    result[i] = false;
-                    break;
-                }
+    assert(str != NULL);
+
+    while (*str != '\0') {
+        s = str;
+        if ((*s >= '0') && (*s <= '9')) {
+            temp++;
+            s++;
+            while ((*s >= '0') && (*s <= '9')) {
+                temp++;
+                s++;
             }
-        }
 
-        if (pattern_index < strlen(pattern)) {
-            result[i] = false;
+            if (temp > *max) {
+                *max = temp;
+                loc  = str;
+            }
+
+            str  = s;
+            temp = 0;
+            continue;
         }
+        str++;
     }
-    *returnSize = queriesSize;
-    return result;
+    printf("max = %d\n", *max);
+    return loc;
 }
 
-
-int main(void)
+int main()
 {
-#if 0
-    int a = 3;
-    int b = 2;
-    int arr[4] = { 1,2,3,4 };
-    printf("max = %d\r\n", MAX(a, b));
-    printf("min = %d\r\n", MIN(a, b));
-    printf("arr_size = %d\r\n", ARR_SIZE(arr));
-
-    if (check_cpu_mode() == 1) {
-        printf("big\r\n");
-    } else if (check_cpu_mode() == 2) {
-        printf("little\r\n");
-    } else {
-        printf("undef\r\n");
-    }
-#endif
-
-    char *queries[] = { "FooBar","FooBarTest","FootBall","FrameBuffer","ForceFeedBack" };
-    char *pattern = "FB";
-
-    int *returnSize = (int *)malloc(sizeof(returnSize));
-
-
-    bool *result = (bool *)malloc(sizeof(result));
-    result = camelMatch(queries, 5, pattern, returnSize);
-
-    printf("[%d,%d,%d,%d,%d]\r\n", result[0], result[1], result[2], result[3], result[4]);
-
+    char str[] = "abc111a2222";
+    int size   = 0;
+    // char *loc = NULL;
+    // loc = func(str, &size);
+    printf("%d , %s\n", size, func(str, &size));
 }
-
-
-
