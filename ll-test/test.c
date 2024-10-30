@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
 char *func(char *str, int *max)
 {
     char *loc = NULL;
